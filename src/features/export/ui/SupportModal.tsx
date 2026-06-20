@@ -1,5 +1,10 @@
 import { createPortal } from "react-dom";
-import { KOFI_URL, SOCIAL_INSTAGRAM, AD_SLOT_MODAL } from "@/core/config";
+import {
+  KOFI_URL,
+  SOCIAL_INSTAGRAM,
+  AD_SLOT_MODAL,
+  ADS_MODAL_ENABLED,
+} from "@/core/config";
 import { CloseIcon, InstagramIcon } from "@/shared/ui/Icons";
 import AdUnit from "@/shared/ui/AdUnit";
 import type { SupportPromptVariant } from "@/features/export/application/useExport";
@@ -42,53 +47,15 @@ export default function SupportModal({
           <CloseIcon />
         </button>
         <div className="support-modal__body">
-          {variant === "first" ? (
+          {variant === "donate" ? (
             <>
               <p className="support-modal__headline" id={titleId}>
-                🎉 Your first poster!
+                ❤︎ Enjoying Terraink?
               </p>
               <p className="support-modal__text">
-                Love your poster? Support us on Instagram for inspiration and updates.
-              </p>
-              <div className="support-modal__actions">
-                {instagramUrl ? (
-                  <a
-                    className="support-modal__instagram"
-                    href={instagramUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <InstagramIcon /> Follow us
-                  </a>
-                ) : null}
-              </div>
-            </>
-          ) : variant === "ad" ? (
-            <>
-              <p className="support-modal__headline" id={titleId}>
-                ✨ Your poster is ready!
-              </p>
-              <AdUnit slot={AD_SLOT_MODAL} format="rectangle" className="support-modal__ad" />
-              <div className="support-modal__actions">
-                <button
-                  type="button"
-                  className="support-modal__dismiss"
-                  onClick={onClose}
-                >
-                  Close
-                </button>
-              </div>
-            </>
-          ) : (
-            <>
-              <p className="support-modal__headline" id={titleId}>
-                ✨ Your poster is ready!
-              </p>
-              <p className="support-modal__text">
-                If Terraink helped you create this poster, consider supporting the project.
-              </p>
-              <p className="support-modal__text">
-                This was your poster <strong>#{posterNumber}</strong> 🎉
+                You've just made your poster <strong>#{posterNumber}</strong>. Terraink
+                is free and ad-light — a small donation keeps it that way and funds new
+                features.
               </p>
               <div className="support-modal__actions">
                 {kofiUrl ? (
@@ -98,9 +65,29 @@ export default function SupportModal({
                     target="_blank"
                     rel="noreferrer"
                   >
-                    <span className="heart">❤︎</span> Support on Ko-fi
+                    <span className="heart">❤︎</span> Donate
                   </a>
-                ) : null}
+                ) : (
+                  <button
+                    type="button"
+                    className="support-modal__dismiss"
+                    onClick={onClose}
+                  >
+                    Close
+                  </button>
+                )}
+              </div>
+            </>
+          ) : (
+            <>
+              <p className="support-modal__headline" id={titleId}>
+                ✨ Your poster is ready!
+              </p>
+              <p className="support-modal__text">
+                Follow Terraink on Instagram for fresh map ideas, design tips, and the
+                latest features — and show off the posters you make.
+              </p>
+              <div className="support-modal__actions">
                 {instagramUrl ? (
                   <a
                     className="support-modal__instagram"
@@ -120,9 +107,14 @@ export default function SupportModal({
                   </button>
                 )}
               </div>
-              <AdUnit slot={AD_SLOT_MODAL} format="rectangle" className="support-modal__ad" />
             </>
           )}
+          <AdUnit
+            slot={AD_SLOT_MODAL}
+            enabled={ADS_MODAL_ENABLED}
+            format="rectangle"
+            className="support-modal__ad"
+          />
         </div>
       </div>
     </div>,

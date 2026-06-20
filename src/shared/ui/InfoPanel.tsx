@@ -16,7 +16,6 @@ import {
   GitHubIcon,
   StarIcon,
   CheckIcon,
-  KofiIcon,
   LinkedInIcon,
   InstagramIcon,
   RedditIcon,
@@ -126,15 +125,14 @@ function HelpUsGrowSection({
                 href={kofiUrl}
                 target="_blank"
                 rel="noreferrer"
-                aria-label="Support Terraink on Ko-fi"
+                aria-label="Support Terraink and donate to keep it free"
+                title="Support Terraink and donate to keep it free"
               >
-                <KofiIcon className="badge-icon" />
-                <span>Support on Ko-fi</span>
+                <span>Donate</span>
               </a>
             ) : (
               <span className="github-badge" style={{ opacity: 0.45 }}>
-                <KofiIcon className="badge-icon" />
-                <span>Support on Ko-fi</span>
+                <span>Donate</span>
               </span>
             )}
           </div>

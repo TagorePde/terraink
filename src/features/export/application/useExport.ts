@@ -31,7 +31,7 @@ export const ADBLOCK_WARN_EVENT = "terraink:adblock-warn";
 
 const EXPORT_COUNT_STORAGE_KEY = "terraink.poster.count";
 
-export type SupportPromptVariant = "first" | "milestone" | "ad";
+export type SupportPromptVariant = "follow" | "donate";
 
 export interface SupportPromptState {
   posterNumber: number;
@@ -93,10 +93,13 @@ export function useExport() {
       return;
     }
 
+    // Prompt cadence (every 5 downloads):
+    //   follow → 1, 5, 10, 15, …  (first download + multiples of 5)
+    //   donate → 3, 8, 13, 18, …  (n % 5 === 3)
+    //   all other downloads show no prompt
     let variant: SupportPromptVariant | null = null;
-    if (nextCount === 1) variant = "first";
-    else if (nextCount % 5 === 0) variant = "milestone";
-    else variant = "ad";
+    if (nextCount === 1 || nextCount % 5 === 0) variant = "follow";
+    else if (nextCount % 5 === 3) variant = "donate";
 
     if (variant) {
       window.dispatchEvent(
