@@ -330,7 +330,6 @@ export default function AppShell() {
       {supportPrompt ? (
         <SupportModal
           posterNumber={supportPrompt.posterNumber}
-          variant={supportPrompt.variant}
           onClose={() => setSupportPrompt(null)}
         />
       ) : null}
