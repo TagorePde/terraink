@@ -1,6 +1,7 @@
 import { createPortal } from "react-dom";
 import { SOCIAL_INSTAGRAM } from "@/core/config";
 import { CloseIcon, InstagramIcon } from "@/shared/ui/Icons";
+import { trackEvent } from "@/shared/utils/analytics";
 
 interface SupportModalProps {
   posterNumber: number;
@@ -51,6 +52,7 @@ export default function SupportModal({
                 href={instagramUrl}
                 target="_blank"
                 rel="noreferrer"
+                onClick={() => trackEvent("follow_click")}
               >
                 <InstagramIcon /> Follow us
               </a>

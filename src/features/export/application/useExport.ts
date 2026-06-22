@@ -19,6 +19,7 @@ import {
   DEFAULT_POSTER_WIDTH_CM,
   DEFAULT_POSTER_HEIGHT_CM,
 } from "@/core/config";
+import { trackEvent } from "@/core/services";
 
 export const ADBLOCK_LIMIT_EVENT = "terraink:adblock-limit";
 export const ADBLOCK_WARN_EVENT = "terraink:adblock-warn";
@@ -116,6 +117,19 @@ export function useExport() {
         const widthInches = widthCm / CM_PER_INCH;
         const heightInches = heightCm / CM_PER_INCH;
 
+        // Aggregate, non-personal export data. Use only the structured city /
+        // country — never raw input (form.location) or coordinates.
+        const exportParams = {
+          format,
+          poster_city: form.displayCity.trim() || "unknown",
+          poster_country: form.displayCountry.trim() || "unknown",
+          theme: form.theme,
+          poster_size: `${widthCm}x${heightCm}`,
+          font: form.fontFamily.trim() || "default",
+          has_markers: hasVisibleMarkers,
+          has_routes: visibleRoutes.length > 0,
+        };
+
         const size = resolveCanvasSize(widthInches, heightInches);
 
         const lat = Number(form.latitude) || 0;
@@ -146,6 +160,7 @@ export function useExport() {
             "svg",
           );
           await triggerDownloadBlob(svgBlob, svgFilename);
+          trackEvent("poster_exported", exportParams);
           registerSuccessfulExport();
           dispatch({ type: "SET_EXPORT_STATUS", exporting: false });
           return;
@@ -201,10 +216,12 @@ export function useExport() {
           await triggerDownloadBlob(pngBlob, filename);
         }
 
+        trackEvent("poster_exported", exportParams);
         registerSuccessfulExport();
         dispatch({ type: "SET_EXPORT_STATUS", exporting: false });
       } catch (err) {
         const message = err instanceof Error ? err.message : "Export failed.";
+        trackEvent("export_failed", { format, reason: message });
         dispatch({ type: "SET_EXPORT_STATUS", exporting: false, error: message });
       }
     },

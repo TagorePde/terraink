@@ -1,4 +1,5 @@
 import { useRepoStars } from "@/shared/hooks/useRepoStars";
+import { trackEvent } from "@/shared/utils/analytics";
 import {
   REPO_URL,
   REPO_API_URL,
@@ -89,6 +90,7 @@ function HelpUsGrowSection({
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Open Terraink repository on GitHub"
+                onClick={() => trackEvent("github_click")}
               >
                 <GitHubIcon className="badge-icon" />
                 <span>GitHub Repo</span>
@@ -127,6 +129,7 @@ function HelpUsGrowSection({
                 rel="noreferrer"
                 aria-label="Support Terraink and donate to keep it free"
                 title="Support Terraink and donate to keep it free"
+                onClick={() => trackEvent("donate_click")}
               >
                 <span>Donate</span>
               </a>
